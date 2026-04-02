@@ -41,10 +41,11 @@ A user-facing mobile app must be built that:
 - Allows editing of clip text, video title, description, and recipe summary
 - Enables one-tap publishing to TastyTube
 
-### 4. Research & Validation
+### 4. Validation
 Product decisions must be grounded in real user behavior:
-- Observe 8–12 home chef creators to understand their actual workflows
 - Conduct usability testing on the MVP before launch to catch blockers
+
+> **Note on exploratory research:** User pain points are already well-defined from the existing creator base. Conducting a separate exploratory research phase before building would add delay without meaningfully changing the MVP scope. Usability testing (included in the MVP) covers the validation needs more efficiently.
 
 ---
 
@@ -63,7 +64,7 @@ To decide *what to build first*, every feature was scored using the **RICE metho
 
 **RICE Score = (Reach × Impact × Confidence) / Effort**
 
-Higher scores = more value per unit of effort. Features are sorted by score and only the top half (≤9 of 18) are included in the MVP.
+Higher scores = more value per unit of effort. Features are sorted by score, and only **9 of 18 features** (exactly half) are included in the MVP — the minimum set without which the product cannot deliver its core value.
 
 ---
 
@@ -75,7 +76,6 @@ The solution follows a clear dependency chain. Each phase unlocks the next:
 Phase 1 — Data Foundation
 │
 ├── Specify dataset               (defines what we train on)
-├── Conduct exploratory research  (defines what we build)
 ├── Select & instruct labeling team
 │
 ▼
@@ -102,36 +102,36 @@ Phase 5 — Distribution
 └── Publish to TastyTube          (closes the creator loop)
 ```
 
-**The pattern is sequential by nature.** You cannot train a model without labeled data. You cannot label data without splitting clips. You cannot test an app that hasn't been built. Each foundational layer must be solid before the next can succeed — which is why data and research tasks are prioritized early, even though they produce no user-visible output on their own.
+**The pattern is sequential by nature.** You cannot train a model without labeled data. You cannot label data without splitting clips. You cannot test an app that hasn't been built. Each foundational layer must be solid before the next can succeed — which is why data tasks are prioritized early, even though they produce no user-visible output on their own.
 
 ---
 
-### MVP Features (10 of 18)
+### MVP Features (9 of 18)
 
-These are the features without which the app cannot deliver its core value:
+These are the features without which the app cannot deliver its core value. The MVP is capped at 9 features — exactly half of the 18 total — following the "ruthless" prioritization principle:
 
 | # | Feature | RICE Score | Rationale |
 |---|---|---|---|
 | 1 | Specify dataset | 62.5 | Nothing works without training data |
-| 2 | Conduct exploratory user research | 62.5 | Ensures we build the right thing |
-| 3 | Select & instruct labeling team | 62.5 | Prerequisite to all data prep |
-| 4 | Publish to TastyTube | 62.5 | Core distribution — closes the creator loop |
-| 5 | Conduct usability testing | 50.0 | Required to ship confidently |
-| 6 | Prepare data: Split videos into clips | 41.7 | Training data for video clipping model |
-| 7 | Prepare data: Apply labels | 41.7 | Ground truth for both ML models |
-| 8 | Create app to edit clips and text | 31.3 | The product itself |
-| 9 | Build ML model: Video clipping | 25.0 | Core AI differentiator |
-| 10 | Build ML model: Step classification | 25.0 | Required for step-level UX |
+| 2 | Select & instruct labeling team | 62.5 | Prerequisite to all data prep |
+| 3 | Publish to TastyTube | 62.5 | Core distribution — closes the creator loop |
+| 4 | Conduct usability testing | 50.0 | Required to ship confidently |
+| 5 | Prepare data: Split videos into clips | 41.7 | Training data for video clipping model |
+| 6 | Prepare data: Apply labels | 41.7 | Ground truth for both ML models |
+| 7 | Create app to edit clips and text | 31.3 | The product itself |
+| 8 | Build ML model: Video clipping | 25.0 | Core AI differentiator |
+| 9 | Build ML model: Step classification | 25.0 | Required for step-level UX |
 
 ### Post-MVP Features (Deferred)
 
 These are valuable but not essential for launch. They extend the product once the core loop is validated:
 
-- **Generate video captions** — creators can caption manually in V1
-- **Generate video title, description & recipe summary** — nice-to-have automation
+- **Conduct exploratory user research** — user pain points are already defined from the existing creator community; usability testing covers validation needs more efficiently
+- **Generate video captions** — creators can caption manually; use third-party STT (speech-to-text) models post-MVP
+- **Generate video title, description & recipe summary** — can be achieved with a third-party LLM on caption text post-MVP
 - **Publish to YouVideo, TikTak, Fastgram** — multi-platform support after TastyTube is proven
-- **Translate into other languages** — localization is a V2 growth feature
-- **Create Recipe Library** — marketing asset, not core functionality
+- **Translate into other languages** — US English focus is sufficient; localization is a V2 growth feature
+- **Create Recipe Library** — marketing asset for a polished post-MVP product
 - **Build Extensions API** — premature before product-market fit
 
 ---
@@ -140,18 +140,18 @@ These are valuable but not essential for launch. They extend the product once th
 
 | Seq | Feature | Sprints | Team | Depends On |
 |---|---|---|---|---|
-| 1 | Specify dataset | 1 | Data Science | — |
-| 2 | Exploratory user research | 2 | Product | — |
-| 3 | Select & instruct labeling team | 1 | Product, Data Science | Specify dataset |
-| 4 | Prepare data: Split clips | 3 | Data Engineering | Labeling team |
-| 5 | Prepare data: Apply labels | 4 | Data Science, Data Eng. | Split clips |
-| 6 | Build ML model: Video clipping | 4 | ML/AI Eng., Data Science | Apply labels |
-| 7 | Build ML model: Step classification | 4 | ML/AI Eng., Data Science | Apply labels |
-| 8 | Create app to edit clips and text | 5 | Engineering, Design | Both ML models |
-| 9 | Conduct usability testing | 1 | Product, QA | App built |
-| 10 | Publish to TastyTube | 2 | Engineering, Product | App built |
+| 1 | Specify dataset | 1 | Data Science team | — |
+| 2 | Select & instruct labeling team | 1 | Product team, Data Science team | Specify dataset |
+| 3 | Conduct usability testing (planning) | 1 | Product team, QA team | — (parallel) |
+| 4 | Prepare data: Split clips | 3 | Data Engineering team | Labeling team |
+| 5 | Prepare data: Apply labels | 4 | Data Science team, Data Engineering team | Split clips |
+| 6 | Build ML model: Video clipping | 4 | ML/AI Engineering team, Data Science team | Apply labels |
+| 7 | Build ML model: Step classification | 4 | ML/AI Engineering team, Data Science team | Apply labels |
+| 8 | Create app to edit clips and text | 5 | Engineering team, Design team | Both ML models |
+| 9 | Conduct usability testing (execution) | 1 | Product team, QA team | App built |
+| 10 | Publish to TastyTube | 2 | Engineering team, Product team | App built |
 
-**Total: ~27 sprints** across 10 features, structured so no team is blocked waiting on another.
+**Total: ~25 sprints** across 9 MVP features, structured so no team is blocked waiting on another.
 
 ---
 
